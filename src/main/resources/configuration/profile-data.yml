@@ -1,0 +1,176 @@
+profile:
+  data:
+    profileId:
+      type: STRING
+      filterAndSortField: profileId
+      searchAllowed: true
+      searchField: profileId
+      partialSearch: true
+    nickname:
+      type: STRING
+      filterAndSortField: nickname
+      searchAllowed: true
+      searchField: nickname
+      partialSearch: true
+    dob:
+      type: DATE_TIME
+      filterAndSortField: dob
+      searchAllowed: false
+      searchField: dob
+      partialSearch: false
+    age:
+      type: INTEGER
+      filterAndSortField: age
+      searchAllowed: false
+      searchField: age
+      partialSearch: false
+    gender:
+      type: STRING
+      filterAndSortField: gender
+      searchAllowed: false
+      searchField: gender
+      partialSearch: false
+    relationshipGoals:
+      type: STRING
+      filterAndSortField: relationshipGoals
+      searchAllowed: false
+      searchField: relationshipGoals
+      partialSearch: false
+    distancePreference:
+      type: INTEGER
+      filterAndSortField: distancePreference
+      searchAllowed: false
+      searchField: distancePreference
+      partialSearch: false
+    profession:
+      type: STRING
+      filterAndSortField: profession
+      searchAllowed: false
+      searchField: profession
+      partialSearch: false
+    weight:
+      type: DOUBLE
+      filterAndSortField: weight
+      searchAllowed: false
+      searchField: weight
+      partialSearch: false
+    height:
+      type: INTEGER
+      filterAndSortField: height
+      searchAllowed: false
+      searchField: height
+      partialSearch: false
+    country:
+      type: STRING
+      filterAndSortField: country
+      searchAllowed: false
+      searchField: country
+      partialSearch: false
+    city:
+      type: STRING
+      filterAndSortField: city
+      searchAllowed: false
+      searchField: city
+      partialSearch: false
+    bio:
+      type: STRING
+      filterAndSortField: bio
+      searchAllowed: false
+      searchField: bio
+      partialSearch: false
+    educationLevel:
+      type: STRING
+      filterAndSortField: educationLevel
+      searchAllowed: false
+      searchField: educationLevel
+      partialSearch: false
+    isPicsVerified:
+      type: BOOLEAN
+      filterAndSortField: isPicsVerified
+      searchAllowed: false
+      searchField: isPicsVerified
+      partialSearch: false
+    location:
+      type: STRING
+      filterAndSortField: location
+      searchAllowed: false
+      searchField: location
+      partialSearch: false
+    userId:
+      type: STRING
+      filterAndSortField: userId
+      searchAllowed: false
+      searchField: userId
+      partialSearch: false
+    dateCreated:
+      type: DATE_TIME
+      filterAndSortField: dateCreated
+      searchAllowed: false
+      searchField: dateCreated
+      partialSearch: false
+    dateUpdated:
+      type: DATE_TIME
+      filterAndSortField: dateUpdated
+      searchAllowed: false
+      searchField: dateCreated
+      partialSearch: false
+    children:
+      type: STRING
+      filterAndSortField: children
+      searchAllowed: false
+      searchField: children
+      partialSearch: false
+    pet:
+      type: STRING
+      filterAndSortField: pet
+      searchAllowed: false
+      searchField: pet
+      partialSearch: false
+    religion:
+      type: STRING
+      filterAndSortField: religion
+      searchAllowed: false
+      searchField: religion
+      partialSearch: false
+    personality:
+      type: STRING
+      filterAndSortField: personality
+      searchAllowed: false
+      searchField: personality
+      partialSearch: false
+    sexuality:
+      type: STRING
+      filterAndSortField: sexuality
+      searchAllowed: false
+      searchField: sexuality
+      partialSearch: false
+    smoking:
+      type: STRING
+      filterAndSortField: smoking
+      searchAllowed: false
+      searchField: smoking
+      partialSearch: false
+    relationshipStatus:
+      type: STRING
+      filterAndSortField: relationshipStatus
+      searchAllowed: false
+      searchField: relationshipStatus
+      partialSearch: false
+    drinkings:
+      type: STRING
+      filterAndSortField: drinkings
+      searchAllowed: false
+      searchField: drinkings
+      partialSearch: false
+    starSign:
+      type: STRING
+      filterAndSortField: starSign
+      searchAllowed: false
+      searchField: starSign
+      partialSearch: false
+    language:
+      type: STRING
+      filterAndSortField: language
+      searchAllowed: false
+      searchField: language
+      partialSearch: false

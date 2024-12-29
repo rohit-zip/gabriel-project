@@ -1,0 +1,141 @@
+server:
+  port: 7001
+spring:
+  application:
+    name: java-backend
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT:5432}/${POSTGRES_DATABASE}?currentSchema=gn128
+    hikari:
+      username: ${POSTGRES_USERNAME}
+      password: ${POSTGRES_PASSWORD}
+      maximum-pool-size: ${POSTGRES_POOL_SIZE:100}
+      minimum-idle: ${POSTGRES_IDLE:7}
+      leak-detection-threshold: 120000
+      max-lifetime: 1800000
+      idle-timeout: 600000
+      connection-timeout: 600000
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+application:
+  version: @version@
+  profile: ${ACTIVE_PROFILE}
+  assets: ${BLOB_STORAGE_BASE_URL}
+
+auth-server:
+  allowed-roles:
+    cookie-name: bloggios-auth
+    roles-to-allow:
+      devsandbox:
+        origin-name: https://dev.bloggios.in
+        must-roles:
+          - ROLE_DEVSANDBOX
+      production:
+        origin-name: https://www.bloggios.com
+        must-roles:
+          - ROLE_USER
+      production-protocol:
+        origin-name: https://bloggios.com
+        must-roles:
+          - ROLE_USER
+      api-testing:
+        origin-name: http://localhost:2000
+        must-roles:
+          - ROLE_DEVELOPER
+      swagger-testing:
+        origin-name: http://localhost:7001
+        must-roles:
+          - ROLE_DEVELOPER
+  OAuth2:
+    OAuth-data:
+      google:
+        clientId: ${GOOGLE_CLIENT_ID:abcd}
+        api-secret: ${GOOGLE_API_SECRET:abcd}
+
+refresh-mgmt:
+  cookie-name: ${ACTIVE_PROFILE:local}.bg-refresh-mgmt
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
+authentication:
+  key-provider:
+    private-key: ${PRIVATE_KEY:classpath:security/privkey.pem}
+    public-key: ${PUBLIC_KEY:classpath:security/pubkey.pem}
+  path-exclude:
+    paths:
+      - /auth/**
+      - /actuator/**
+      - /api/v1/auth/**"
+      - /v2/api-docs
+      - /swagger-resources
+      - /swagger-resources/**
+      - /configuration/ui
+      - /configuration/security
+      - /swagger-ui/**
+      - /webjars/**
+      - /swagger-ui.html
+      - /v3/api-docs
+      - /v3/api-docs/**
+
+swagger-properties:
+  group-name:
+    definition: ${spring.application.name}
+    scan-packages: com.gn128
+  info:
+    title: GN128 - Backend
+    version: @version@
+    description: API Documentation for GN128 - Dating Application Backend
+    summary: This Application, developed with Java 17 and Spring Boot, is designed to offer robust backend services for GN128.
+    contact:
+      name: GN128
+      email: support@gn128.com
+      url: https://www.gn128.com
+    license:
+      name: Apache 2 License
+      url: https://github.com/Bloggios/auth-provider-application/blob/main/LICENSE
+  servers:
+    local:
+      name: Local Port
+      url: http://localhost:${server.port}
+    production:
+      name: Hosted Port
+      url: https://api.bloggios.com
+
+mail-configuration:
+  google-mail: # Please add your gmail details below
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    password: ${MAIL_PASSWORD}
+    username: ${MAIL_USERNAME}
+
+flutter-wave:
+  token: ${FLUTTER_WAVE_TOKEN:1234}
+
+payment:
+  enabled: true
+  application-package:
+    standard:
+      week: 100
+      month: 400
+      year: 1000
+    premium:
+      week: 200
+      month: 700
+      year: 2000
+
+files:
+  profile: ${PROFILE_IMAGES_PATH:/files/profile}
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
