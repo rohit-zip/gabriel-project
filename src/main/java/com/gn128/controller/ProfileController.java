@@ -87,8 +87,8 @@ public class ProfileController {
                     )
             }
     )
-    public ListResponse profileList(@RequestBody ListPayload listPayload) {
-        return profileService.list(listPayload);
+    public ListResponse profileList(@RequestBody ListPayload listPayload, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return profileService.list(listPayload, userPrincipal);
     }
 
     @PostMapping("/add-image")

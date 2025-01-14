@@ -23,15 +23,6 @@
 
 package com.gn128.websocket;
 
-import com.bloggios.websockets.provider.constants.InternalErrorExceptionCodes;
-import com.bloggios.websockets.provider.processor.VoidProcess;
-import com.bloggios.websockets.provider.processor.implementation.voidprocess.PersistDisconnectedUserProcessor;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
-import java.util.Objects;
-
 /**
  * Owner - Rohit Parihar
  * Author - rohit
@@ -41,24 +32,24 @@ import java.util.Objects;
  * Created_at - 13 : 29
  */
 
-@Component
-public class WebSocketDisconnectExecutor implements VoidProcess<StompHeaderAccessor> {
-
-    private final PersistDisconnectedUserProcessor persistDisconnectedUserProcessor;
-
-    public WebSocketDisconnectExecutor(
-            PersistDisconnectedUserProcessor persistDisconnectedUserProcessor
-    ) {
-        this.persistDisconnectedUserProcessor = persistDisconnectedUserProcessor;
-    }
-
-    @Override
-    public void process(
-            @NotNull(message = InternalErrorExceptionCodes.STOMP_HEADER_ACCESSOR_NULL) StompHeaderAccessor stompHeaderAccessor
-    ) {
-        String sessionId = stompHeaderAccessor.getSessionId();
-        if (Objects.nonNull(sessionId)) {
-            persistDisconnectedUserProcessor.process(sessionId);
-        }
-    }
-}
+//@Component
+//public class WebSocketDisconnectExecutor implements VoidProcess<StompHeaderAccessor> {
+//
+//    private final PersistDisconnectedUserProcessor persistDisconnectedUserProcessor;
+//
+//    public WebSocketDisconnectExecutor(
+//            PersistDisconnectedUserProcessor persistDisconnectedUserProcessor
+//    ) {
+//        this.persistDisconnectedUserProcessor = persistDisconnectedUserProcessor;
+//    }
+//
+//    @Override
+//    public void process(
+//            @NotNull(message = InternalErrorExceptionCodes.STOMP_HEADER_ACCESSOR_NULL) StompHeaderAccessor stompHeaderAccessor
+//    ) {
+//        String sessionId = stompHeaderAccessor.getSessionId();
+//        if (Objects.nonNull(sessionId)) {
+//            persistDisconnectedUserProcessor.process(sessionId);
+//        }
+//    }
+//}

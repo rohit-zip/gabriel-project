@@ -6,9 +6,12 @@ import com.gn128.constants.ExceptionMessages;
 import com.gn128.constants.ServiceConstants;
 import com.gn128.dao.pgsql.PgSQLProfile;
 import com.gn128.dao.repository.ProfileRepository;
+import com.gn128.dao.repository.VisitRepository;
 import com.gn128.entity.Profile;
+import com.gn128.entity.Visit;
 import com.gn128.entity.embeddable.ImageLinks;
 import com.gn128.exception.payloads.BadRequestException;
+import com.gn128.payloads.ListDataPayloads.ExcludeFilter;
 import com.gn128.payloads.ListPayload;
 import com.gn128.payloads.record.UploadImagePayloadRecord;
 import com.gn128.payloads.request.InitialProfileRequest;
@@ -21,6 +24,7 @@ import com.gn128.processor.listprocessor.ProfileListProcessor;
 import com.gn128.service.ProfileService;
 import com.gn128.transformer.InitialProfileRequestToProfileTransformer;
 import com.gn128.transformer.ProfileToProfileResponseTransformer;
+import com.gn128.utils.AsyncUtils;
 import com.gn128.validator.implementation.ImagesListValidator;
 import com.gn128.validator.implementation.ListPayloadExhibitor;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +39,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * Author - rohit
@@ -58,6 +64,7 @@ public class ProfileServiceImplementation implements ProfileService {
     private final Environment environment;
     private final ImagesListValidator imagesListValidator;
     private final ProfileToProfileResponseTransformer profileToProfileResponseTransformer;
+    private final VisitRepository visitRepository;
 
     @Override
     public ModuleResponse addProfile(InitialProfileRequest initialProfileRequest, UserPrincipal userPrincipal) {
@@ -77,9 +84,19 @@ public class ProfileServiceImplementation implements ProfileService {
     }
 
     @Override
-    public ListResponse list(ListPayload listPayload) {
+    public ListResponse list(ListPayload listPayload, UserPrincipal userPrincipal) {
         listPayloadExhibitor.validateAll(listPayload);
+        CompletableFuture<List<Visit>> visitCompletableFuture = CompletableFuture.supplyAsync(() -> visitRepository.findAllByUserId(userPrincipal.getUserId()));
         ListPayload processedListPayload = profileListProcessor.initProcess(listPayload);
+        List<Visit> visitList = AsyncUtils.getAsyncResult(visitCompletableFuture);
+        if (!visitList.isEmpty()) {
+            ExcludeFilter excludeFilter = ExcludeFilter
+                    .builder()
+                    .filterKey("userId")
+                    .selections(visitList.stream().map(Visit::getUserId).collect(Collectors.toList()))
+                    .build();
+            processedListPayload.setExcludeFilter(excludeFilter);
+        }
         List<Profile> responseData = profilePgsqlBuilderImplementation.build(processedListPayload).getResultList();
         Long totalRecords = profilePgsqlBuilderImplementation.getTotalRecords(processedListPayload);
         return ListResponse

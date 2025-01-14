@@ -22,7 +22,7 @@ import java.util.List;
 public interface ProfileService {
 
     ModuleResponse addProfile(InitialProfileRequest initialProfileRequest, UserPrincipal userPrincipal);
-    ListResponse list(ListPayload listPayload);
+    ListResponse list(ListPayload listPayload, UserPrincipal userPrincipal);
     ModuleResponse addUserImages(List<MultipartFile> images, UserPrincipal userPrincipal);
     ProfileResponse getProfile(UserPrincipal userPrincipal);
     ModuleResponse addDetailedOrUpdateProfile(ProfileRequest profileRequest, UserPrincipal userPrincipal);
