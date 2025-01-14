@@ -3,13 +3,11 @@ server:
 spring:
   application:
     name: java-backend
-  profiles:
-    active: dev
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT:5432}/${POSTGRES_DATABASE}?currentSchema=public
+    url: jdbc:postgresql://138.68.150.48:${POSTGRES_PORT:5432}/postgres?currentSchema=gn128
     hikari:
-      username: ${POSTGRES_USERNAME}
-      password: ${POSTGRES_PASSWORD}
+      username: postgres
+      password: Rohit@1234
       maximum-pool-size: ${POSTGRES_POOL_SIZE:100}
       minimum-idle: ${POSTGRES_IDLE:7}
       leak-detection-threshold: 120000
@@ -22,8 +20,8 @@ spring:
 
 application:
   version: @version@
-  profile: ${ACTIVE_PROFILE}
-  assets: ${BLOB_STORAGE_BASE_URL}
+  profile: dev
+  assets: http://138.68.150.48:7001/assets
 
 auth-server:
   allowed-roles:
@@ -112,11 +110,11 @@ swagger-properties:
       url: https://api.bloggios.com
 
 mail-configuration:
-  google-mail: # Please add your gmail details below
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT}
-    password: ${MAIL_PASSWORD}
-    username: ${MAIL_USERNAME}
+  google-mail:
+    host: abcd
+    port: 587
+    password: abcd
+    username: abcd
 
 flutter-wave:
   token: ${FLUTTER_WAVE_TOKEN:1234}

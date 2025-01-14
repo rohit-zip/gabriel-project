@@ -28,6 +28,7 @@ public class ListPayload {
     private List<SearchFilter> searchFilters;
     private List<AbsoluteFilter> absoluteFilters;
     private ExcludeFilter excludeFilter;
+    private DistanceFilter distanceFilter;
     private Integer page;
     private Integer size;
 }

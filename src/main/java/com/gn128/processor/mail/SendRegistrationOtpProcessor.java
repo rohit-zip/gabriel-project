@@ -59,6 +59,7 @@ public class SendRegistrationOtpProcessor {
         } else {
             RegistrationOtp registrationOtp = otpGenerator.registrationOtpSupplier(userAuth);
             registrationOtp.setTimesSent(0);
+            logger.info("OTP: {}", registrationOtp.getOtp());
             //registrationOtpMailSendingProcessor.sendMail(registrationOtp);
             registrationOtpRepository.save(registrationOtp);
         }

@@ -45,7 +45,8 @@ public class Profile {
 
     @Enumerated(EnumType.STRING)
     private RelationshipGoal relationshipGoals;
-    private Integer distancePreference;
+    private Integer latitude;
+    private Integer longitude;
     private String profession;
     private Double weight;
     private Integer height;
@@ -55,7 +56,7 @@ public class Profile {
 
     @Enumerated(EnumType.STRING)
     private EducationLevel educationLevel;
-    private String interest; // 1, 2, 3, 4
+    private String interest;
     private Boolean isPicsVerified;
     private String location;
 

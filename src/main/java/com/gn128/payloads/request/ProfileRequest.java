@@ -33,7 +33,8 @@ public class ProfileRequest {
     private Integer age;
     private Gender gender;
     private RelationshipGoal relationshipGoals;
-    private Integer distancePreference;
+    private Integer latitude;
+    private Integer longitude;
     private String profession;
     private Double weight;
     private Integer height;
@@ -61,7 +62,8 @@ public class ProfileRequest {
         profile.setAge(profileRequest.getAge());
         profile.setGender(profileRequest.getGender());
         profile.setRelationshipGoals(profileRequest.getRelationshipGoals());
-        profile.setDistancePreference(profileRequest.getDistancePreference());
+        profile.setLatitude(profileRequest.getLatitude());
+        profile.setLongitude(profileRequest.getLongitude());
         profile.setProfession(profileRequest.getProfession());
         profile.setWeight(profileRequest.getWeight());
         profile.setHeight(profileRequest.getHeight());

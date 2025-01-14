@@ -30,4 +30,5 @@ public interface CriteriaQueryGenerator<A> {
     List<Predicate> initFilter(ListPayload listPayload, Root<A> root);
     List<Predicate> initAbsoluteFilter(ListPayload listPayload, Root<A> root);
     List<Predicate> initExcludeFilter(ListPayload listPayload, Root<A> root);
+    //List<Predicate> initDistanceFilter(ListPayload listPayload, Root<A> root);
 }
