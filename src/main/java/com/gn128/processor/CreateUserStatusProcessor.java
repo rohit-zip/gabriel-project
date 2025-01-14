@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Bloggios
+ * Copyright © 2023-2024 Rohit Parihar and Bloggios
  * All rights reserved.
  * This software is the property of Rohit Parihar and is protected by copyright law.
  * The software, including its source code, documentation, and associated files, may not be used, copied, modified, distributed, or sublicensed without the express written consent of Rohit Parihar.
@@ -21,61 +21,44 @@
  * limitations under the License.
  */
 
-package com.gn128.utils;
+package com.gn128.processor;
 
-import com.gn128.entity.ForgetPassword;
-import com.gn128.entity.RegistrationOtp;
-import com.gn128.entity.UserAuth;
+import com.gn128.dao.repository.UserStatusRepository;
+import com.gn128.entity.UserStatus;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
-import java.util.function.Supplier;
-
-import static com.gn128.constants.ServiceConstants.MINUTES_7;
 
 /**
  * Owner - Rohit Parihar
  * Author - rohit
- * Project - auth-provider-application
- * Package - com.bloggios.auth.provider.utils
- * Created_on - 02 December-2023
- * Created_at - 23 : 56
+ * Project - bloggios-websockets-provider
+ * Package - com.bloggios.websockets.provider.processor.implementation.voidprocess
+ * Created_on - 28 February-2024
+ * Created_at - 21 : 37
  */
 
 @Component
-public class OtpGenerator {
+@RequiredArgsConstructor
+public class CreateUserStatusProcessor {
 
-    private final Supplier<String> generateOtp = () -> {
-        StringBuilder string = new StringBuilder();
-        SecureRandom secureRandom = new SecureRandom();
-        for (int i=0 ; i<6 ; i++){
-            string.append(secureRandom.nextInt(9));
-        }
-        return string.toString();
-    };
+    private final Environment environment;
+    private final UserStatusRepository userStatusRepository;
 
-    public RegistrationOtp registrationOtpSupplier(UserAuth userAuth){
-        return RegistrationOtp
+    public UserStatus apply(String userId, String sessionId, String remoteAddress) {
+        UserStatus userStatus = UserStatus
                 .builder()
-                .otpId(UUID.randomUUID().toString())
-                .userId(userAuth.getUserId())
-                .email(userAuth.getEmail())
-                .otp(generateOtp.get())
-                .dateGenerated(new Date())
-                .expiry(new Date(System.currentTimeMillis() + MINUTES_7))
+                .userStatusId(UUID.randomUUID().toString())
+                .userId(userId)
+                .sessionId(sessionId)
+                .connectedOn(Date.from(Instant.now()))
+                .isConnected(true)
+                .remoteAddress(remoteAddress)
                 .build();
-    }
-
-    public ForgetPassword forgetPasswordOtpSupplier(UserAuth userAuth) {
-        return ForgetPassword
-                .builder()
-                .otp(generateOtp.get())
-                .dateGenerated(new Date())
-                .expiry(new Date(System.currentTimeMillis() + MINUTES_7))
-                .userId(userAuth.getUserId())
-                .email(userAuth.getEmail())
-                .build();
+        return userStatusRepository.save(userStatus);
     }
 }

@@ -3,8 +3,10 @@ package com.gn128.service;
 import com.gn128.authentication.UserPrincipal;
 import com.gn128.payloads.ListPayload;
 import com.gn128.payloads.request.InitialProfileRequest;
+import com.gn128.payloads.request.ProfileRequest;
 import com.gn128.payloads.response.ListResponse;
 import com.gn128.payloads.response.ModuleResponse;
+import com.gn128.payloads.response.ProfileResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -22,4 +24,6 @@ public interface ProfileService {
     ModuleResponse addProfile(InitialProfileRequest initialProfileRequest, UserPrincipal userPrincipal);
     ListResponse list(ListPayload listPayload);
     ModuleResponse addUserImages(List<MultipartFile> images, UserPrincipal userPrincipal);
+    ProfileResponse getProfile(UserPrincipal userPrincipal);
+    ModuleResponse addDetailedOrUpdateProfile(ProfileRequest profileRequest, UserPrincipal userPrincipal);
 }

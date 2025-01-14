@@ -97,4 +97,6 @@ public class ServiceConstants {
     public static final String DESCENDING = "DESC";
     public static final String DATE_CREATED = "dateCreated";
     public static final String UPLOAD_PROFILE = "profile";
+    public static final String USER_ID = "userId";
+    public static final String ACCESS_TOKEN = "accessToken";
 }

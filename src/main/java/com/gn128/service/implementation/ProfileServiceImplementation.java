@@ -12,12 +12,15 @@ import com.gn128.exception.payloads.BadRequestException;
 import com.gn128.payloads.ListPayload;
 import com.gn128.payloads.record.UploadImagePayloadRecord;
 import com.gn128.payloads.request.InitialProfileRequest;
+import com.gn128.payloads.request.ProfileRequest;
 import com.gn128.payloads.response.ListResponse;
 import com.gn128.payloads.response.ModuleResponse;
+import com.gn128.payloads.response.ProfileResponse;
 import com.gn128.processor.UploadImagesLinkProcessor;
 import com.gn128.processor.listprocessor.ProfileListProcessor;
 import com.gn128.service.ProfileService;
 import com.gn128.transformer.InitialProfileRequestToProfileTransformer;
+import com.gn128.transformer.ProfileToProfileResponseTransformer;
 import com.gn128.validator.implementation.ImagesListValidator;
 import com.gn128.validator.implementation.ListPayloadExhibitor;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +57,7 @@ public class ProfileServiceImplementation implements ProfileService {
     private final UploadImagesLinkProcessor uploadImagesLinkProcessor;
     private final Environment environment;
     private final ImagesListValidator imagesListValidator;
+    private final ProfileToProfileResponseTransformer profileToProfileResponseTransformer;
 
     @Override
     public ModuleResponse addProfile(InitialProfileRequest initialProfileRequest, UserPrincipal userPrincipal) {
@@ -112,5 +116,26 @@ public class ProfileServiceImplementation implements ProfileService {
         Profile profileResponse = profileRepository.save(profile);
         log.info("Execution Time (Add User Images) : {}ms", System.currentTimeMillis() - startTime);
         return ModuleResponse.builder().message("Images Uploaded").id(profileResponse.getProfileId()).build();
+    }
+
+    @Override
+    public ProfileResponse getProfile(UserPrincipal userPrincipal) {
+        Profile profile = profileRepository.findByUserId(userPrincipal.getUserId())
+                .orElseThrow(() -> new BadRequestException("Profile not found using User Id", HttpStatus.BAD_REQUEST));
+        return profileToProfileResponseTransformer.transform(profile);
+    }
+
+    @Override
+    public ModuleResponse addDetailedOrUpdateProfile(ProfileRequest profileRequest, UserPrincipal userPrincipal) {
+        Profile profile = profileRepository.findByUserId(userPrincipal.getUserId())
+                .orElseThrow(() -> new BadRequestException("Profile not found using User Id", HttpStatus.BAD_REQUEST));
+        ProfileRequest.setProfileValues(profile, profileRequest);
+        Profile profileResponse = profileRepository.save(profile);
+        return ModuleResponse
+                .builder()
+                .message("Profile Updated to server")
+                .userId(userPrincipal.getUserId())
+                .id(profileResponse.getProfileId())
+                .build();
     }
 }

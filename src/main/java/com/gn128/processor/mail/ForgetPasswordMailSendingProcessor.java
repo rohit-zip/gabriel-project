@@ -2,7 +2,6 @@ package com.gn128.processor.mail;
 
 import com.gn128.constants.EnvironmentConstants;
 import com.gn128.entity.ForgetPassword;
-import com.gn128.entity.RegistrationOtp;
 import com.gn128.javamail.GmailSending;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
