@@ -21,34 +21,42 @@
  * limitations under the License.
  */
 
-package com.gn128.websocket;
+package com.gn128.configuration;
 
-import com.gn128.processor.PersistDisconnectedUserProcessor;
+import com.gn128.websocket.WebSocketConnectExecutor;
+import com.gn128.websocket.WebSocketDisconnectExecutor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 /**
  * Owner - Rohit Parihar
  * Author - rohit
  * Project - bloggios-websockets-provider
- * Package - com.bloggios.websockets.provider.processor.executor
- * Created_on - 01 March-2024
- * Created_at - 13 : 29
+ * Package - com.bloggios.websockets.provider.configurations
+ * Created_on - 29 February-2024
+ * Created_at - 13 : 41
  */
 
 @Component
 @RequiredArgsConstructor
-public class WebSocketDisconnectExecutor {
+public class WebsocketChannelInterceptor implements ChannelInterceptor {
 
-    private final PersistDisconnectedUserProcessor persistDisconnectedUserProcessor;
+    private final WebSocketConnectExecutor webSocketConnectExecutor;
+    private final WebSocketDisconnectExecutor webSocketDisconnectExecutor;
 
-    public void process(StompHeaderAccessor stompHeaderAccessor) {
-        String sessionId = stompHeaderAccessor.getSessionId();
-        if (Objects.nonNull(sessionId)) {
-            persistDisconnectedUserProcessor.process(sessionId);
+    @Override
+    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+            webSocketConnectExecutor.process(accessor);
+        } else if (StompCommand.DISCONNECT.equals(accessor.getCommand())) {
+            webSocketDisconnectExecutor.process(accessor);
         }
+        return message;
     }
 }

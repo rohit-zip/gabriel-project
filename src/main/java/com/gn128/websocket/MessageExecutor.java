@@ -23,32 +23,32 @@
 
 package com.gn128.websocket;
 
-import com.gn128.processor.PersistDisconnectedUserProcessor;
+import com.gn128.payloads.record.MessageRecord;
+import com.gn128.payloads.record.NotificationResponseRecord;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 /**
  * Owner - Rohit Parihar
  * Author - rohit
  * Project - bloggios-websockets-provider
- * Package - com.bloggios.websockets.provider.processor.executor
- * Created_on - 01 March-2024
- * Created_at - 13 : 29
+ * Package - com.bloggios.websockets.provider.message
+ * Created_on - 03 March-2024
+ * Created_at - 19 : 26
  */
 
 @Component
 @RequiredArgsConstructor
-public class WebSocketDisconnectExecutor {
+public class MessageExecutor {
 
-    private final PersistDisconnectedUserProcessor persistDisconnectedUserProcessor;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public void process(StompHeaderAccessor stompHeaderAccessor) {
-        String sessionId = stompHeaderAccessor.getSessionId();
-        if (Objects.nonNull(sessionId)) {
-            persistDisconnectedUserProcessor.process(sessionId);
-        }
+    public void sendNotificationMessage(String userId, NotificationResponseRecord notificationResponseRecord) {
+        messagingTemplate.convertAndSendToUser(userId, "/private/notify", notificationResponseRecord);
+    }
+
+    public void sendPrivateMessage(MessageRecord messageRecord) {
+        messagingTemplate.convertAndSendToUser(messageRecord.receiverId(), "/private/chat", messageRecord);
     }
 }

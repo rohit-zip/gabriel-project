@@ -21,34 +21,54 @@
  * limitations under the License.
  */
 
-package com.gn128.websocket;
+package com.gn128.transformer;
 
-import com.gn128.processor.PersistDisconnectedUserProcessor;
+import com.gn128.entity.Chat;
+import com.gn128.entity.ChatHistory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
+import java.time.Instant;
+import java.util.Date;
+import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Owner - Rohit Parihar
  * Author - rohit
  * Project - bloggios-websockets-provider
- * Package - com.bloggios.websockets.provider.processor.executor
- * Created_on - 01 March-2024
- * Created_at - 13 : 29
+ * Package - com.bloggios.websockets.provider.transformer.implementation.function
+ * Created_on - 28 March-2024
+ * Created_at - 16 : 56
  */
 
 @Component
 @RequiredArgsConstructor
-public class WebSocketDisconnectExecutor {
+public class ChatDocumentToChatHistoryTransformer implements Function<Chat, ChatHistory> {
 
-    private final PersistDisconnectedUserProcessor persistDisconnectedUserProcessor;
+    private final Environment environment;
 
-    public void process(StompHeaderAccessor stompHeaderAccessor) {
-        String sessionId = stompHeaderAccessor.getSessionId();
-        if (Objects.nonNull(sessionId)) {
-            persistDisconnectedUserProcessor.process(sessionId);
-        }
+    @Override
+    public ChatHistory apply(Chat chat) {
+        return ChatHistory
+                .builder()
+                .chatHistoryId(UUID.randomUUID().toString())
+                .userId(chat.getSenderId())
+                .receiverId(chat.getReceiverId())
+                .createdOn(Date.from(Instant.now()))
+                .updatedOn(Date.from(Instant.now()))
+                .build();
+    }
+
+    public ChatHistory apply(String senderId, String receiverId) {
+        return ChatHistory
+                .builder()
+                .chatHistoryId(UUID.randomUUID().toString())
+                .userId(senderId)
+                .receiverId(receiverId)
+                .createdOn(Date.from(Instant.now()))
+                .updatedOn(Date.from(Instant.now()))
+                .build();
     }
 }

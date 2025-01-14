@@ -21,34 +21,42 @@
  * limitations under the License.
  */
 
-package com.gn128.websocket;
+package com.gn128.controller;
 
-import com.gn128.processor.PersistDisconnectedUserProcessor;
+import com.gn128.payloads.response.ModuleResponse;
+import com.gn128.service.ChatService;
+import com.gn128.utils.AsyncUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.stereotype.Component;
-
-import java.util.Objects;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Owner - Rohit Parihar
  * Author - rohit
  * Project - bloggios-websockets-provider
- * Package - com.bloggios.websockets.provider.processor.executor
- * Created_on - 01 March-2024
- * Created_at - 13 : 29
+ * Package - com.bloggios.websockets.provider.controller
+ * Created_on - 25 March-2024
+ * Created_at - 12 : 52
  */
 
-@Component
+@RestController
+@RequestMapping("/messaging")
 @RequiredArgsConstructor
-public class WebSocketDisconnectExecutor {
+public class ChatController {
 
-    private final PersistDisconnectedUserProcessor persistDisconnectedUserProcessor;
+    private final ChatService chatService;
 
-    public void process(StompHeaderAccessor stompHeaderAccessor) {
-        String sessionId = stompHeaderAccessor.getSessionId();
-        if (Objects.nonNull(sessionId)) {
-            persistDisconnectedUserProcessor.process(sessionId);
-        }
+    @PostMapping
+    public ResponseEntity<ModuleResponse> sendPrivateMessage(
+            @RequestPart(required = false) MultipartFile file,
+            @RequestPart String senderId,
+            @RequestPart String receiverId,
+            @RequestPart String message
+            ) {
+        return ResponseEntity.ok(AsyncUtils.getAsyncResult(chatService.sendPrivateMessage(file, senderId, receiverId, message)));
     }
 }

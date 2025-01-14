@@ -21,34 +21,23 @@
  * limitations under the License.
  */
 
-package com.gn128.websocket;
+package com.gn128.service;
 
-import com.gn128.processor.PersistDisconnectedUserProcessor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.stereotype.Component;
+import com.gn128.payloads.response.ModuleResponse;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Owner - Rohit Parihar
  * Author - rohit
  * Project - bloggios-websockets-provider
- * Package - com.bloggios.websockets.provider.processor.executor
- * Created_on - 01 March-2024
- * Created_at - 13 : 29
+ * Package - com.bloggios.websockets.provider.service
+ * Created_on - 25 March-2024
+ * Created_at - 13 : 00
  */
 
-@Component
-@RequiredArgsConstructor
-public class WebSocketDisconnectExecutor {
+public interface ChatService {
 
-    private final PersistDisconnectedUserProcessor persistDisconnectedUserProcessor;
-
-    public void process(StompHeaderAccessor stompHeaderAccessor) {
-        String sessionId = stompHeaderAccessor.getSessionId();
-        if (Objects.nonNull(sessionId)) {
-            persistDisconnectedUserProcessor.process(sessionId);
-        }
-    }
+    CompletableFuture<ModuleResponse> sendPrivateMessage(MultipartFile file, String senderId, String receiverId, String message);
 }

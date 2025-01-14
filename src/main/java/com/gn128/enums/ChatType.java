@@ -21,34 +21,19 @@
  * limitations under the License.
  */
 
-package com.gn128.websocket;
-
-import com.gn128.processor.PersistDisconnectedUserProcessor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.stereotype.Component;
-
-import java.util.Objects;
+package com.gn128.enums;
 
 /**
- * Owner - Rohit Parihar
+ * Owner - Rohit Parihar and Bloggios
  * Author - rohit
  * Project - bloggios-websockets-provider
- * Package - com.bloggios.websockets.provider.processor.executor
- * Created_on - 01 March-2024
- * Created_at - 13 : 29
+ * Package - com.bloggios.websockets.provider.enums
+ * Created_on - April 01 - 2024
+ * Created_at - 19:59
  */
 
-@Component
-@RequiredArgsConstructor
-public class WebSocketDisconnectExecutor {
+public enum ChatType {
 
-    private final PersistDisconnectedUserProcessor persistDisconnectedUserProcessor;
-
-    public void process(StompHeaderAccessor stompHeaderAccessor) {
-        String sessionId = stompHeaderAccessor.getSessionId();
-        if (Objects.nonNull(sessionId)) {
-            persistDisconnectedUserProcessor.process(sessionId);
-        }
-    }
+    SENDER,
+    RECEIVER
 }
