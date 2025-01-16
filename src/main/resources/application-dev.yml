@@ -132,7 +132,7 @@ payment:
       year: 2000
 
 files:
-  profile: ${PROFILE_IMAGES_PATH:/files/profile}
+  profile: ${PROFILE_IMAGES_PATH:files/profile}
 
 logging:
   level:

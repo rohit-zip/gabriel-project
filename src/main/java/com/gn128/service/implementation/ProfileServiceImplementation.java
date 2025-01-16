@@ -128,7 +128,7 @@ public class ProfileServiceImplementation implements ProfileService {
                 ServiceConstants.UPLOAD_PROFILE
         );
         List<ImageLinks> imageLinks = uploadImagesLinkProcessor.process(uploadImagePayloadRecord);
-        profile.setImageLinks(imageLinks);
+        profile.getImageLinks().addAll(imageLinks);
         profile.setDateUpdated(new Date());
         Profile profileResponse = profileRepository.save(profile);
         log.info("Execution Time (Add User Images) : {}ms", System.currentTimeMillis() - startTime);
