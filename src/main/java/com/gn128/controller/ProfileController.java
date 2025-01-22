@@ -169,7 +169,7 @@ public class ProfileController {
         return new ResponseEntity<>(profileService.addDetailedOrUpdateProfile(profileRequest, userPrincipal), HttpStatus.CREATED);
     }
 
-    @GetMapping("/add-status")
+    @PostMapping("/add-status")
     @Operation(
             responses = {
                     @ApiResponse(description = "SUCCESS", responseCode = "200", content = @Content(
@@ -221,7 +221,7 @@ public class ProfileController {
         return new ResponseEntity<>(profileService.deleteStatus(statusId, userPrincipal), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/list-status")
+    @GetMapping("/list-status")
     @Operation(
             responses = {
                     @ApiResponse(description = "SUCCESS", responseCode = "200", content = @Content(
