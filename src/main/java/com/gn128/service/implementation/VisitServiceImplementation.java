@@ -60,7 +60,7 @@ public class VisitServiceImplementation implements VisitService {
                 .visitDate(Date.from(Instant.now()))
                 .build();
         Visit visitResponse = visitRepository.save(visit);
-        if (action.equalsIgnoreCase(Action.LIKE.toString()) || action.equalsIgnoreCase(Action.DISLIKE.toString())) {
+        if (action.equalsIgnoreCase(Action.LIKE.toString()) || action.equalsIgnoreCase(Action.SUPERLIKE.toString())) {
             likeService.addLike(visitorId, action, userPrincipal);
         }
         return CompletableFuture.completedFuture(
