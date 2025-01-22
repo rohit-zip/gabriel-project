@@ -1,6 +1,7 @@
 package com.gn128.service;
 
 import com.gn128.authentication.UserPrincipal;
+import com.gn128.payloads.response.ListResponse;
 import com.gn128.payloads.response.ModuleResponse;
 
 /**
@@ -13,5 +14,6 @@ import com.gn128.payloads.response.ModuleResponse;
 
 public interface LikeService {
 
-    ModuleResponse addLike(String likedTo, UserPrincipal userPrincipal);
+    ModuleResponse addLike(String likedTo, String action, UserPrincipal userPrincipal);
+    ListResponse getUserLikes(UserPrincipal userPrincipal);
 }

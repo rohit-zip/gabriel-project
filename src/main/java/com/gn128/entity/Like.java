@@ -2,6 +2,7 @@ package com.gn128.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gn128.constants.ServiceConstants;
+import com.gn128.enums.Action;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -33,6 +34,9 @@ public class Like {
     private String userId;
     private String likedBy;
     private String likedTo;
+
+    @Enumerated(EnumType.STRING)
+    private Action action;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;

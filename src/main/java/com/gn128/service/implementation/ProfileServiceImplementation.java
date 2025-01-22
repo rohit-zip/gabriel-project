@@ -92,11 +92,13 @@ public class ProfileServiceImplementation implements ProfileService {
         CompletableFuture<List<Visit>> visitCompletableFuture = CompletableFuture.supplyAsync(() -> visitRepository.findAllByUserId(userPrincipal.getUserId()));
         ListPayload processedListPayload = profileListProcessor.initProcess(listPayload);
         List<Visit> visitList = AsyncUtils.getAsyncResult(visitCompletableFuture);
+        List<String> userIdList = visitList.stream().map(Visit::getUserId).collect(Collectors.toList());
+        userIdList.add(userPrincipal.getUserId());
         if (!visitList.isEmpty()) {
             ExcludeFilter excludeFilter = ExcludeFilter
                     .builder()
                     .filterKey("userId")
-                    .selections(visitList.stream().map(Visit::getUserId).collect(Collectors.toList()))
+                    .selections(userIdList)
                     .build();
             processedListPayload.setExcludeFilter(excludeFilter);
         }
