@@ -6,8 +6,10 @@ import com.gn128.constants.ExceptionMessages;
 import com.gn128.constants.ServiceConstants;
 import com.gn128.dao.pgsql.PgSQLProfile;
 import com.gn128.dao.repository.ProfileRepository;
+import com.gn128.dao.repository.StatusRepository;
 import com.gn128.dao.repository.VisitRepository;
 import com.gn128.entity.Profile;
+import com.gn128.entity.Status;
 import com.gn128.entity.Visit;
 import com.gn128.entity.embeddable.ImageLinks;
 import com.gn128.exception.payloads.BadRequestException;
@@ -65,6 +67,7 @@ public class ProfileServiceImplementation implements ProfileService {
     private final ImagesListValidator imagesListValidator;
     private final ProfileToProfileResponseTransformer profileToProfileResponseTransformer;
     private final VisitRepository visitRepository;
+    private final StatusRepository statusRepository;
 
     @Override
     public ModuleResponse addProfile(InitialProfileRequest initialProfileRequest, UserPrincipal userPrincipal) {
@@ -153,6 +156,76 @@ public class ProfileServiceImplementation implements ProfileService {
                 .message("Profile Updated to server")
                 .userId(userPrincipal.getUserId())
                 .id(profileResponse.getProfileId())
+                .build();
+    }
+
+    @Override
+    public ModuleResponse addStatus(List<MultipartFile> images, String message, UserPrincipal userPrincipal) {
+        imagesListValidator.validate(images);
+        Profile profile = profileRepository.findByUserId(userPrincipal.getUserId())
+                .orElseThrow(() -> new BadRequestException("Profile not found using User Id", HttpStatus.BAD_REQUEST));
+        List<ImageLinks> profileImageLinks = profile.getImageLinks();
+        if (Objects.nonNull(profileImageLinks) && !CollectionUtils.isEmpty(profileImageLinks)) {
+            int size = profileImageLinks.size();
+            if (images.size() + size > 9) {
+                throw new BadRequestException(size + "Images are already present. Now you can only add " + (9 - size) + " Images", HttpStatus.BAD_REQUEST);
+            }
+        }
+        UploadImagePayloadRecord uploadImagePayloadRecord = new UploadImagePayloadRecord(
+                environment.getProperty(EnvironmentConstants.PROFILE_IMAGES_PATH),
+                userPrincipal.getUserId(),
+                images,
+                ServiceConstants.UPLOAD_PROFILE
+        );
+        List<ImageLinks> imageLinks = uploadImagesLinkProcessor.process(uploadImagePayloadRecord);
+        Status status = Status
+                .builder()
+                .profileId(profile.getProfileId())
+                .userId(userPrincipal.getUserId())
+                .imageLinks(imageLinks)
+                .message(message)
+                .build();
+        Status statusResponse = statusRepository.save(status);
+        return ModuleResponse
+                .builder()
+                .message("Status Added")
+                .userId(userPrincipal.getUserId())
+                .id(statusResponse.getStatusId())
+                .build();
+    }
+
+    @Override
+    public ModuleResponse deleteStatus(String statusId, UserPrincipal userPrincipal) {
+        Status status = statusRepository.findById(statusId)
+                .orElseThrow(() -> new BadRequestException("Status not found using Status Id", HttpStatus.BAD_REQUEST));
+        statusRepository.delete(status);
+        return ModuleResponse
+                .builder()
+                .message("Status Deleted")
+                .userId(userPrincipal.getUserId())
+                .id(statusId)
+                .build();
+    }
+
+    @Override
+    public ListResponse listStatus(String userId, UserPrincipal userPrincipal) {
+        List<Status> status = statusRepository.findAllByUserId(userId != null ? userId : userPrincipal.getUserId());
+        return ListResponse
+                .builder()
+                .object(status)
+                .page(0)
+                .size(status.size())
+                .build();
+    }
+
+    @Override
+    public ListResponse listAllStatus() {
+        List<Status> status = statusRepository.findAll();
+        return ListResponse
+                .builder()
+                .object(status)
+                .page(0)
+                .size(status.size())
                 .build();
     }
 }

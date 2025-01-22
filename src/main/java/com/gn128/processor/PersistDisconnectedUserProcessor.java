@@ -64,7 +64,7 @@ public class PersistDisconnectedUserProcessor {
             logger.warn("""
                     Important
                     Flow Revision Required for Disconnection Interception
-                    Disconnection Interceptor raised for Session Id {}, but Connected user is not available in the Elasticsearch
+                    Disconnection Interceptor raised for Session Id {}, but Connected user is not available in the Database
                     No action taken from Server side
                     """, sessionId);
         } else {

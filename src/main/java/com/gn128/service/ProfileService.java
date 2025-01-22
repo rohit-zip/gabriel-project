@@ -26,4 +26,8 @@ public interface ProfileService {
     ModuleResponse addUserImages(List<MultipartFile> images, UserPrincipal userPrincipal);
     ProfileResponse getProfile(UserPrincipal userPrincipal);
     ModuleResponse addDetailedOrUpdateProfile(ProfileRequest profileRequest, UserPrincipal userPrincipal);
+    ModuleResponse addStatus(List<MultipartFile> images, String message, UserPrincipal userPrincipal);
+    ModuleResponse deleteStatus(String statusId, UserPrincipal userPrincipal);
+    ListResponse listStatus(String userId, UserPrincipal userPrincipal);
+    ListResponse listAllStatus();
 }

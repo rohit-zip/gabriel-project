@@ -168,4 +168,108 @@ public class ProfileController {
     public ResponseEntity<ModuleResponse> addDetailedOrUpdateProfile(@RequestBody ProfileRequest profileRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         return new ResponseEntity<>(profileService.addDetailedOrUpdateProfile(profileRequest, userPrincipal), HttpStatus.CREATED);
     }
+
+    @GetMapping("/add-status")
+    @Operation(
+            responses = {
+                    @ApiResponse(description = "SUCCESS", responseCode = "200", content = @Content(
+                            mediaType = "application/json", schema = @Schema(implementation = ModuleResponse.class)
+                    )),
+                    @ApiResponse(description = "No Content", responseCode = "401", content = {
+                            @Content(schema = @Schema(implementation = Void.class))
+                    }),
+                    @ApiResponse(description = "FORBIDDEN", responseCode = "403", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+                    }),
+                    @ApiResponse(description = "BAD REQUEST", responseCode = "400", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionResponse.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(
+                            name = "bearerAuth"
+                    )
+            }
+    )
+    public ResponseEntity<ModuleResponse> addStatus(@RequestPart List<MultipartFile> images, @RequestPart(required = false) String message, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return new ResponseEntity<>(profileService.addStatus(images, message, userPrincipal), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/delete-status")
+    @Operation(
+            responses = {
+                    @ApiResponse(description = "SUCCESS", responseCode = "200", content = @Content(
+                            mediaType = "application/json", schema = @Schema(implementation = ModuleResponse.class)
+                    )),
+                    @ApiResponse(description = "No Content", responseCode = "401", content = {
+                            @Content(schema = @Schema(implementation = Void.class))
+                    }),
+                    @ApiResponse(description = "FORBIDDEN", responseCode = "403", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+                    }),
+                    @ApiResponse(description = "BAD REQUEST", responseCode = "400", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionResponse.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(
+                            name = "bearerAuth"
+                    )
+            }
+    )
+    public ResponseEntity<ModuleResponse> deleteStatus(@RequestParam String statusId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return new ResponseEntity<>(profileService.deleteStatus(statusId, userPrincipal), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/list-status")
+    @Operation(
+            responses = {
+                    @ApiResponse(description = "SUCCESS", responseCode = "200", content = @Content(
+                            mediaType = "application/json", schema = @Schema(implementation = ListResponse.class)
+                    )),
+                    @ApiResponse(description = "No Content", responseCode = "401", content = {
+                            @Content(schema = @Schema(implementation = Void.class))
+                    }),
+                    @ApiResponse(description = "FORBIDDEN", responseCode = "403", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+                    }),
+                    @ApiResponse(description = "BAD REQUEST", responseCode = "400", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionResponse.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(
+                            name = "bearerAuth"
+                    )
+            }
+    )
+    public ResponseEntity<ListResponse> listStatus(@RequestParam(required = false) String userId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return new ResponseEntity<>(profileService.listStatus(userId, userPrincipal), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/list-all-status")
+    @Operation(
+            responses = {
+                    @ApiResponse(description = "SUCCESS", responseCode = "200", content = @Content(
+                            mediaType = "application/json", schema = @Schema(implementation = ListResponse.class)
+                    )),
+                    @ApiResponse(description = "No Content", responseCode = "401", content = {
+                            @Content(schema = @Schema(implementation = Void.class))
+                    }),
+                    @ApiResponse(description = "FORBIDDEN", responseCode = "403", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+                    }),
+                    @ApiResponse(description = "BAD REQUEST", responseCode = "400", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionResponse.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(
+                            name = "bearerAuth"
+                    )
+            }
+    )
+    public ResponseEntity<ListResponse> listAllStatus() {
+        return new ResponseEntity<>(profileService.listAllStatus(), HttpStatus.CREATED);
+    }
 }
