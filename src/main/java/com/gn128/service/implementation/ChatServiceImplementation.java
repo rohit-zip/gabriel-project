@@ -103,6 +103,13 @@ public class ChatServiceImplementation implements ChatService {
                 senderChatDocument.getDateCreated()
         ));
         log.debug("Message sent successfully to {}", senderChatDocument.getReceiverId());
-        return null;
+        return CompletableFuture.completedFuture(
+                ModuleResponse
+                        .builder()
+                        .userId(senderId)
+                        .id(receiverId)
+                        .message("Message Sent")
+                        .build()
+        );
     }
 }
