@@ -48,6 +48,7 @@ public class Profile {
     private Integer latitude;
     private Integer longitude;
     private String profession;
+    private String linkedIdUrl;
     private Double weight;
     private Integer height;
     private String country;

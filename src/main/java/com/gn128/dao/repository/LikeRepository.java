@@ -14,5 +14,5 @@ import java.util.List;
  */
 
 public interface LikeRepository extends JpaRepository<Like, String> {
-    List<Like> findAllByUserId(String userId);
+    List<Like> findAllByLikedTo(String userId);
 }

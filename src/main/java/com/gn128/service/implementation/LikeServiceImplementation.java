@@ -49,7 +49,7 @@ public class LikeServiceImplementation implements LikeService {
 
     @Override
     public ListResponse getUserLikes(UserPrincipal userPrincipal) {
-        List<Like> likes = likeRepository.findAllByUserId(userPrincipal.getUserId());
+        List<Like> likes = likeRepository.findAllByLikedTo(userPrincipal.getUserId());
         return ListResponse
                 .builder()
                 .object(likes)

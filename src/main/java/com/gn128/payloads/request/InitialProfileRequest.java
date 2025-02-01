@@ -31,4 +31,5 @@ public class InitialProfileRequest {
     private String city;
     private String bio;
     private String educationLevel;
+    private String linkedInUrl;
 }
