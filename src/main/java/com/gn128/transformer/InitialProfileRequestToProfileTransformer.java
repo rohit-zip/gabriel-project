@@ -1,7 +1,6 @@
 package com.gn128.transformer;
 
 import com.gn128.entity.Profile;
-import com.gn128.enums.EducationLevel;
 import com.gn128.payloads.request.InitialProfileRequest;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +26,7 @@ public class InitialProfileRequestToProfileTransformer {
                 .country(initialProfileRequest.getCountry())
                 .city(initialProfileRequest.getCity())
                 .bio(initialProfileRequest.getBio())
-                .educationLevel(EducationLevel.getByValue(initialProfileRequest.getEducationLevel()))
+                .educationLevel(initialProfileRequest.getEducationLevel())
                 .dateCreated(new Date())
                 .userId(userId)
                 .build();

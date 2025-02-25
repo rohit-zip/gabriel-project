@@ -11,6 +11,7 @@ import com.gn128.entity.UserAuth;
 import com.gn128.entity.Visit;
 import com.gn128.enums.Action;
 import com.gn128.exception.payloads.BadRequestException;
+import com.gn128.payloads.response.ListResponse;
 import com.gn128.payloads.response.ModuleResponse;
 import com.gn128.service.LikeService;
 import com.gn128.service.VisitService;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -71,5 +73,16 @@ public class VisitServiceImplementation implements VisitService {
                         .id(visitResponse.getVisitId())
                         .build()
         );
+    }
+
+    @Override
+    public CompletableFuture<ListResponse> getVisits(UserPrincipal userPrincipal) {
+        List<Visit> allByVisitorId = visitRepository.findAllByVisitorId(userPrincipal.getUserId());
+        return CompletableFuture.completedFuture(ListResponse
+                .builder()
+                .object(allByVisitorId)
+                .size(allByVisitorId.size())
+                .page(0)
+                .build());
     }
 }

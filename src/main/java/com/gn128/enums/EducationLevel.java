@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 public enum EducationLevel {
 
     NONE("None"),
-    PRIMARY_EDUCATION("Primary Education"),
+    PRIMARY_EDUCATION("Primary Education"), // PRIMARY_EDUCATION -> Primary Education
     SECONDRY_EDUCATION("Secondry Education"),
     HIGHER_EDUCATION("Higher Education"),
     VOCATIONAL_TRAINING("Vocational Training"),

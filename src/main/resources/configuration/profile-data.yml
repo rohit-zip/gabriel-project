@@ -81,7 +81,7 @@ profile:
     educationLevel:
       type: STRING
       filterAndSortField: educationLevel
-      searchAllowed: false
+      searchAllowed: true
       searchField: educationLevel
       partialSearch: false
     isPicsVerified:

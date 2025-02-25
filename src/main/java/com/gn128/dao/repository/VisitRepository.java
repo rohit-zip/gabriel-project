@@ -9,4 +9,6 @@ import java.util.List;
 public interface VisitRepository extends JpaRepository<Visit, String> {
 
     List<Visit> findAllByUserId(String userId);
+
+    List<Visit> findAllByVisitorId(String visitorId);
 }

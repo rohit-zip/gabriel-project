@@ -3,9 +3,6 @@ package com.gn128.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gn128.constants.ServiceConstants;
 import com.gn128.entity.embeddable.ImageLinks;
-import com.gn128.enums.EducationLevel;
-import com.gn128.enums.Gender;
-import com.gn128.enums.RelationshipGoal;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -39,12 +36,8 @@ public class Profile {
     private String nickname;
     private Date dob;
     private Integer age;
-
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
-    @Enumerated(EnumType.STRING)
-    private RelationshipGoal relationshipGoals;
+    private String gender;
+    private String relationshipGoals;
     private Integer latitude;
     private Integer longitude;
     private String profession;
@@ -54,9 +47,7 @@ public class Profile {
     private String country;
     private String city;
     private String bio;
-
-    @Enumerated(EnumType.STRING)
-    private EducationLevel educationLevel;
+    private String educationLevel;
     private String interest;
     private Boolean isPicsVerified;
     private String location;

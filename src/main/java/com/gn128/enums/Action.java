@@ -5,5 +5,6 @@ public enum Action {
 
     LIKE,
     SUPERLIKE,
-    DISLIKE
+    DISLIKE,
+    VISIT
 }

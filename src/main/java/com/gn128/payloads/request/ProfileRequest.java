@@ -60,8 +60,8 @@ public class ProfileRequest {
         profile.setNickname(profileRequest.getNickname());
         profile.setDob(profileRequest.getDob());
         profile.setAge(profileRequest.getAge());
-        profile.setGender(profileRequest.getGender());
-        profile.setRelationshipGoals(profileRequest.getRelationshipGoals());
+        profile.setGender(profileRequest.getGender().name());
+        profile.setRelationshipGoals(profileRequest.getRelationshipGoals().name());
         profile.setLatitude(profileRequest.getLatitude());
         profile.setLongitude(profileRequest.getLongitude());
         profile.setProfession(profileRequest.getProfession());
@@ -70,7 +70,7 @@ public class ProfileRequest {
         profile.setCountry(profileRequest.getCountry());
         profile.setCity(profileRequest.getCity());
         profile.setBio(profileRequest.getBio());
-        profile.setEducationLevel(profileRequest.getEducationLevel());
+        profile.setEducationLevel(profileRequest.getEducationLevel().name());
         profile.setInterest(profileRequest.getInterest());
         profile.setIsPicsVerified(profileRequest.getIsPicsVerified());
         profile.setLocation(profileRequest.getLocation());

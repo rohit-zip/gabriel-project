@@ -10,7 +10,6 @@ package com.gn128.controller;
 import com.gn128.authentication.UserPrincipal;
 import com.gn128.payloads.response.ExceptionResponse;
 import com.gn128.payloads.response.ListResponse;
-import com.gn128.payloads.response.ModuleResponse;
 import com.gn128.service.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

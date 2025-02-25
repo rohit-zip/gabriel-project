@@ -41,10 +41,10 @@ public class PgSQLProfile implements CriteriaQueryGenerator<Profile> {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public TypedQuery<Profile> build(ListPayload listRequest) {
+    public TypedQuery<Profile> build(ListPayload listPayload) {
         CriteriaQuery<Profile> query = getCriteriaBuilder().createQuery(Profile.class);
         Root<Profile> root = query.from(Profile.class);
-        return getQuery(listRequest, query, root);
+        return getQuery(listPayload, query, root);
     }
 
     private TypedQuery<Profile> getQuery(ListPayload listRequest, CriteriaQuery<Profile> query, Root<Profile> root) {
@@ -73,17 +73,17 @@ public class PgSQLProfile implements CriteriaQueryGenerator<Profile> {
     }
 
     @Override
-    public List<Predicate> initSearch(ListPayload listRequest, Root<Profile> root) {
+    public List<Predicate> initSearch(ListPayload listPayload, Root<Profile> root) {
         List<Predicate> searchPredicates = new ArrayList<>();
-        if (!ObjectUtils.isEmpty(listRequest.getSearch())) {
+        if (!ObjectUtils.isEmpty(listPayload.getSearch())) {
             List<Predicate> textPredicates = new ArrayList<>();
-            listRequest
+            listPayload
                     .getSearch()
                     .stream()
                     .filter(data -> !ObjectUtils.isEmpty(data))
                     .forEach(text -> {
                         List<Predicate> fieldPredicate = new ArrayList<>();
-                        listRequest
+                        listPayload
                                 .getSearchFilters()
                                 .forEach(searchFilter -> {
                                     if (searchFilter.isPartialSearch()) {
@@ -100,10 +100,10 @@ public class PgSQLProfile implements CriteriaQueryGenerator<Profile> {
     }
 
     @Override
-    public List<Order> initSort(ListPayload listRequest, Root<Profile> root) {
+    public List<Order> initSort(ListPayload listPayload, Root<Profile> root) {
         List<Order> order = new ArrayList<>();
-        if (!ObjectUtils.isEmpty(listRequest.getSorts())) {
-            listRequest
+        if (!ObjectUtils.isEmpty(listPayload.getSorts())) {
+            listPayload
                     .getSorts()
                     .forEach(sort -> {
                         if (ASC.equals(sort.getOrder())) {
@@ -188,74 +188,6 @@ public class PgSQLProfile implements CriteriaQueryGenerator<Profile> {
         }
         return excludeFilterPredicates;
     }
-
-//    @Override
-//    public List<Predicate> initDistanceFilter(ListPayload listPayload, Root<Profile> root) {
-//        List<Predicate> distanceFilterPredicates = new ArrayList<>();
-//        DistanceFilter distanceFilter = listPayload.getDistanceFilter();
-//        int distanceInKm = distanceFilter.getDistancePreference();
-//        Double referenceLatitude = distanceFilter.getLatitude();
-//        Double referenceLongitude = distanceFilter.getLongitude();
-//
-//        if (referenceLatitude != null && referenceLongitude != null) {
-//            double earthRadiusKm = 6371.0;
-//            double distanceInRadians = distanceInKm / earthRadiusKm;
-//            Predicate latitudePredicate = getCriteriaBuilder().and(
-//                    getCriteriaBuilder().greaterThanOrEqualTo(
-//                            root.get("latitude"),
-//                            referenceLatitude - Math.toDegrees(distanceInRadians)
-//                    ),
-//                    getCriteriaBuilder().lessThanOrEqualTo(
-//                            root.get("latitude"),
-//                            referenceLatitude + Math.toDegrees(distanceInRadians)
-//                    )
-//            );
-//            distanceFilterPredicates.add(latitudePredicate);
-//            Predicate longitudePredicate = getCriteriaBuilder().and(
-//                    getCriteriaBuilder().greaterThanOrEqualTo(
-//                            root.get("longitude"),
-//                            referenceLongitude - Math.toDegrees(distanceInRadians / Math.cos(Math.toRadians(referenceLatitude)))
-//                    ),
-//                    getCriteriaBuilder().lessThanOrEqualTo(
-//                            root.get("longitude"),
-//                            referenceLongitude + Math.toDegrees(distanceInRadians / Math.cos(Math.toRadians(referenceLatitude)))
-//                    )
-//            );
-//            distanceFilterPredicates.add(longitudePredicate);
-//            Expression<Double> lat1 = getCriteriaBuilder().literal(referenceLatitude);
-//            Expression<Double> lon1 = getCriteriaBuilder().literal(referenceLongitude);
-//            Expression<Double> lat2 = getCriteriaBuilder().toDouble(root.get("latitude"));
-//            Expression<Double> lon2 = getCriteriaBuilder().toDouble(root.get("longitude"));
-//
-//            Expression<Double> haversineDistance = getCriteriaBuilder().function(
-//                    "acos",
-//                    Double.class,
-//                    getCriteriaBuilder().sum(
-//                            getCriteriaBuilder().prod(
-//                                    getCriteriaBuilder().cos(getCriteriaBuilder().function("radians", Double.class, lat1)),
-//                                    getCriteriaBuilder().prod(
-//                                            getCriteriaBuilder().cos(getCriteriaBuilder().function("radians", lat2)),
-//                                            getCriteriaBuilder().cos(
-//                                                    getCriteriaBuilder().function("radians", getCriteriaBuilder().diff(lon2, lon1))
-//                                            )
-//                                    )
-//                            ),
-//                            getCriteriaBuilder().prod(
-//                                    getCriteriaBuilder().sin(getCriteriaBuilder().function("radians", lat1)),
-//                                    getCriteriaBuilder().sin(getCriteriaBuilder().function("radians", lat2))
-//                            )
-//                    )
-//            );
-//
-//            Predicate distancePredicate = getCriteriaBuilder().lessThanOrEqualTo(
-//                    haversineDistance,
-//                    Math.cos(distanceInRadians)
-//            );
-//            distanceFilterPredicates.add(distancePredicate);
-//        }
-//
-//        return distanceFilterPredicates;
-//    }
 
     private List<Predicate> setMaxValue(AbsoluteFilter absoluteFilter, List<Predicate> selectionPredicates, Root<Profile> root) {
         if (!ObjectUtils.isEmpty(absoluteFilter.getSelection().getMaximum())) {
