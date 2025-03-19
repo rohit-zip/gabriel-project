@@ -41,9 +41,12 @@ public class ProfileResponse {
     private Double weight;
     private Integer height;
     private String country;
+    private Integer latitude;
+    private Integer longitude;
+    private String linkedIdUrl;
     private String city;
     private String bio;
-    private EducationLevel educationLevel;
+    private String educationLevel;
     private String interest;
     private Boolean isPicsVerified;
     private String location;

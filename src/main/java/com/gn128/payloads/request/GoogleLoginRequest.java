@@ -43,6 +43,6 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GoogleLoginRequest {
 
-    private String token;
-    private String secret;
+    private String token; // access token
+    private String secret; // 1234
 }

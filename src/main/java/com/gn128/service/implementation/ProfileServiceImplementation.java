@@ -101,6 +101,13 @@ public class ProfileServiceImplementation implements ProfileService {
                     .selections(userIdList)
                     .build();
             processedListPayload.setExcludeFilter(excludeFilter);
+        } else {
+            ExcludeFilter excludeFilter = ExcludeFilter
+                    .builder()
+                    .filterKey("userId")
+                    .selections(List.of(userPrincipal.getUserId()))
+                    .build();
+            processedListPayload.setExcludeFilter(excludeFilter);
         }
         List<Profile> responseData = profilePgsqlBuilderImplementation.build(processedListPayload).getResultList();
         Long totalRecords = profilePgsqlBuilderImplementation.getTotalRecords(processedListPayload);

@@ -28,7 +28,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     String[] allowedOrigins = {
             "http://localhost:7001",
-            "https://bloggios.com",
+            "https://bloggios.com"
     };
 
     @Override
