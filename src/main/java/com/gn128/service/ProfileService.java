@@ -30,4 +30,5 @@ public interface ProfileService {
     ModuleResponse deleteStatus(String statusId, UserPrincipal userPrincipal);
     ListResponse listStatus(String userId, UserPrincipal userPrincipal);
     ListResponse listAllStatus();
+    ModuleResponse deleteProfile(UserPrincipal userPrincipal);
 }

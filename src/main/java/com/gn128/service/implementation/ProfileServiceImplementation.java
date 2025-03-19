@@ -94,6 +94,7 @@ public class ProfileServiceImplementation implements ProfileService {
         List<Visit> visitList = AsyncUtils.getAsyncResult(visitCompletableFuture);
         List<String> userIdList = visitList.stream().map(Visit::getUserId).collect(Collectors.toList());
         userIdList.add(userPrincipal.getUserId());
+        log.info("Visit List: {}", visitList);
         if (!visitList.isEmpty()) {
             ExcludeFilter excludeFilter = ExcludeFilter
                     .builder()
@@ -235,6 +236,16 @@ public class ProfileServiceImplementation implements ProfileService {
                 .object(status)
                 .page(0)
                 .size(status.size())
+                .build();
+    }
+
+    @Override
+    public ModuleResponse deleteProfile(UserPrincipal userPrincipal) {
+        log.info("Delete Profile : {}", userPrincipal.getUserId());
+        profileRepository.deleteByUserId(userPrincipal.getUserId());
+        return ModuleResponse
+                .builder()
+                .message("Profile Deleted")
                 .build();
     }
 }

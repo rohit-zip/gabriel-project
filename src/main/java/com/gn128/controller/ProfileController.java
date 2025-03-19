@@ -272,4 +272,30 @@ public class ProfileController {
     public ResponseEntity<ListResponse> listAllStatus() {
         return new ResponseEntity<>(profileService.listAllStatus(), HttpStatus.CREATED);
     }
+
+    @DeleteMapping
+    @Operation(
+            responses = {
+                    @ApiResponse(description = "SUCCESS", responseCode = "200", content = @Content(
+                            mediaType = "application/json", schema = @Schema(implementation = ModuleResponse.class)
+                    )),
+                    @ApiResponse(description = "No Content", responseCode = "401", content = {
+                            @Content(schema = @Schema(implementation = Void.class))
+                    }),
+                    @ApiResponse(description = "FORBIDDEN", responseCode = "403", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+                    }),
+                    @ApiResponse(description = "BAD REQUEST", responseCode = "400", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionResponse.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(
+                            name = "bearerAuth"
+                    )
+            }
+    )
+    public ResponseEntity<ModuleResponse> deleteProfile(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return new ResponseEntity<>(profileService.deleteProfile(userPrincipal), HttpStatus.OK);
+    }
 }
